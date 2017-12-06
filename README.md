@@ -32,8 +32,7 @@ The `by_option` parameter controls whether response data is retrieved on
 the level of an item or on the level of each option in each item. It
 defaults to `FALSE`, i.e. in the default case we retrieve response data
 on item level. If `by_option` is `TRUE` we retrieve response data for
-each response option. The description of the obtained response data is
-given below in the section "Data description".
+each response option. 
 
 ```R
 
@@ -43,8 +42,8 @@ option_data <- get_response_table(testData, id, by_option = TRUE)
 ```
 
 If only information about a subset of the test items is required, the
-parameter `item_IDs` can be adjusted. If, for example, all responses to
-the item with the ID = 1 is desired, use `get_response_table` like this:
+parameter `item_IDs` can be adjusted. If for example only responses to
+item 1 are required, use `get_response_table` like this:
 
 ```R
 
@@ -65,8 +64,6 @@ who responded to the item is represented in the column `id`. The column
 `item_id` contains the ID representing the item. Additionally (as of the
 time of this writing), the following columns are stored: 
 
-For a MC test:
-
 - `correct`: was the item answered correctly
 - `option_id_selected`: the ID of the response option that was selected
 - `position_solution`: Where was the solution shown (1 means it was the
@@ -76,13 +73,13 @@ For a MC test:
    was presented in the test)
 - `response_time`: the response time in ms
 
-Additionally, the following information is stored for a DOMC test:
+If the test is a DOMC test, the following information is also stored:
 
 - `false_alarm`: was a distractor incorrectly accepted
 - `miss`: was the solution incorrectly rejected
 - `n_options_seen`: how many response options did the test-taker see
 
-The following columns have a different meaning in a DOMC test: 
+These columns have a different meaning in a DOMC test:
 
 - `option_id_selected` can be 0, meaning that no option was accepted
 - `position_solution`: which option was the solution in the sequential
@@ -115,3 +112,14 @@ For DOMC tests, the following additional data is stored:
     + 0 means this option was a distractor and was rejected
     + NA means this option was not a distractor or was not processed
 - `response_time_by_option`: the response time for the option in ms
+
+### Merging option and item data
+
+Option and item response data can be joined if that is desired (it does
+however make the interpretation of column names more ambiguous):
+
+```R
+
+merge(item_data, option_data, by = c("id", "item_id"))
+
+```
