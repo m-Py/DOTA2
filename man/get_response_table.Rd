@@ -12,7 +12,7 @@ get_response_table(response_data, test_taker_IDs, by_option = FALSE,
 
 \item{test_taker_IDs}{A vector of unique IDs identifying each each
 test-taker (the order must correspond to the order of response
-data in `response_data_sample`)}
+data in `response_data`)}
 
 \item{by_option}{Boolean. Indicates whether response data should be
 returned on item level or - if set to `TRUE` - on option level}

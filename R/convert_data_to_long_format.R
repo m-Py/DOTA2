@@ -4,7 +4,7 @@
 #' @param response_data A vector of Unipark-exported test data strings
 #' @param test_taker_IDs A vector of unique IDs identifying each each
 #'     test-taker (the order must correspond to the order of response
-#'     data in `response_data_sample`)
+#'     data in `response_data`)
 #' @param by_option Boolean. Indicates whether response data should be
 #'     returned on item level or - if set to `TRUE` - on option level
 #' @param item_IDs A numeric vector corresponding to the IDs of all
@@ -28,7 +28,7 @@
 get_response_table <- function(response_data, test_taker_IDs,
                                by_option = FALSE, item_IDs = NULL,
                                item_prefix = "item") {
-    if (length(response_data_sample) != length(test_taker_IDs)) {
+    if (length(response_data) != length(test_taker_IDs)) {
         stop("There are not as many test data strings as there are test-taker ids")
     }
     tmp_list <- list()
