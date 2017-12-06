@@ -1,3 +1,0 @@
-
-
-DOTA2 offers the function `get_response_table` to read test data from Unipark-exported JSON strings. 
