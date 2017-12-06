@@ -4,34 +4,34 @@
 \alias{get_response_table}
 \title{Creates a table in long format representing the test response data}
 \usage{
-get_response_table(response_data_sample, test_taker_IDs, by_option = FALSE,
+get_response_table(response_data, test_taker_IDs, by_option = FALSE,
   item_IDs = NULL, item_prefix = "item")
 }
 \arguments{
-\item{response_data_sample}{A vector of all Unipark-exported test
-data strings}
+\item{response_data}{A vector of Unipark-exported test data strings}
 
 \item{test_taker_IDs}{A vector of unique IDs identifying each each
-test-taker (the order should correspond to the order of response
+test-taker (the order must correspond to the order of response
 data in `response_data_sample`)}
 
 \item{by_option}{Boolean. Indicates whether response data should be
 returned on item level or - if set to `TRUE` - on option level}
 
 \item{item_IDs}{A numeric vector corresponding to the IDs of all
-items in the test. Do not change the default `NULL` if response
-data should be read for all items (i.e. in most cases).}
+items in the test. Do not change the default value `NULL` if
+response data should be read for all items (i.e. in most cases).}
 
-\item{item_prefix}{By default the function assumes that each item has
-a name of the type "itemx" where x is the ID of the item. If the
-prefix is anything other than "item", change the default value of
-this argument; this should not be necessary in most cases!.}
+\item{item_prefix}{By default it is assumed that each item has a name
+of the type "itemx" where x is the ID of the item. If the prefix
+is anything other than "item", change the default value of this
+argument; this should not be necessary in most cases!}
 }
 \value{
-A long table (a data.frame) containing test data of the
-    sample (columns include the correctness of responses, response
-    times, and other information, possibly for each option if
-    `by_option` is ` TRUE`)
+A `data.frame` in long format containing test-takers'
+    response data. Columns include the correctness of responses,
+    response times, and other information. Each row represents the
+    processing of an item (if `by_option` was `FALSE`) of the
+    processing of a single option (if `by_option` was `TRUE`).
 }
 \description{
 Creates a table in long format representing the test response data
