@@ -1,0 +1,14 @@
+Package: DOTA2
+Type: Package
+Title: DOMC test analysis
+Author: Martin Papenberg <martin.papenberg@hhu.de>
+Maintainer: Martin Papenberg <martin.papenberg@hhu.de>
+Depends: R (>= 3.0.0)
+Description: Discrete option test analysis
+License: GPL-3
+Encoding: UTF-8
+LazyLoad: yes
+Imports: jsonlite, plyr
+Version: 0.0.01
+Date: 2017-12-06
+RoxygenNote: 6.0.1
