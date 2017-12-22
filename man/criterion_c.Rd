@@ -18,6 +18,9 @@ yes-rate is aggregated over; the default is `c("option_position",
 "id")` in which case the response criterion is computed for each
 test-taker by option.}
 
+\item{colnames}{What are the columns containing hit and false alarm
+scores called? Generally the default should not be changed.}
+
 \item{long.tab}{A long table containing DOMC response data by
 response option (created by `get_item_table(responseDataSample,
 IDs, by_option = TRUE)`)}

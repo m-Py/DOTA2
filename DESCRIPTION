@@ -10,5 +10,5 @@ Encoding: UTF-8
 LazyLoad: yes
 Imports: jsonlite, plyr
 Version: 0.0.01
-Date: 2017-12-06
+Date: 2017-12-22
 RoxygenNote: 6.0.1

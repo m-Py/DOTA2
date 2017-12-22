@@ -4,7 +4,7 @@
 #' Package: \tab DOTA2\cr
 #' Type: \tab Package\cr
 #' Version: \tab 0.0.01\cr
-#' Date: \tab 2017-12-06\cr
+#' Date: \tab 2017-12-22\cr
 #' Depends: \tab R (>= 3.0.0)\cr
 #' Encoding: \tab UTF-8\cr
 #' License: \tab GPL-3\cr

@@ -42,6 +42,8 @@ accuracy_d <- function(option.tab, loglinear = TRUE,
 #'     yes-rate is aggregated over; the default is `c("option_position",
 #'     "id")` in which case the response criterion is computed for each
 #'     test-taker by option.
+#' @param colnames What are the columns containing hit and false alarm
+#'     scores called? Generally the default should not be changed.
 #' 
 #' @author Martin Papenberg \email{martin.papenberg@@hhu.de}
 #'
@@ -79,11 +81,11 @@ criterion_c <- function(option.tab, loglinear = TRUE,
 #
 # 
 relative_yes <- function(option.tab, score = "hit_by_option", loglinear=TRUE,
-                         aggregateBy = c("option", "id")) {
-    if ("option" %in% aggregateBy & "id" %in% aggregateBy) {
+                         aggregateBy = c("option_position", "id")) {
+    if ("option_position" %in% aggregateBy & "id" %in% aggregateBy) {
         tab <- table(option.tab[[score]], option.tab$option, option.tab$id)
         tab <- apply(tab, 3,  relative_yes_one_tab, loglinear)
-    } else if (aggregateBy == "option" | aggregateBy == "id") {
+    } else if (aggregateBy == "option_position" | aggregateBy == "id") {
         tab <- table(option.tab[[score]], option.tab[[aggregateBy]])
         tab <- relative_yes_one_tab(tab, loglinear)
     }

@@ -1,13 +1,13 @@
 
 #' Convert DOMC response data from Unipark output to R list
 #'
-#' Converts response data for one DOMC test-taker from Unipark JSON String
-#' to a usable R list. Each entry of the returned list represents one DOMC item.
+#' Converts response data for one test-taker from Unipark JSON String to
+#' a `list`.
 #'
 #' @param JsonString The JSON string, usually stored in the column of an
 #'     Unipark-exported csv
 #' @param itemIDs A numeric vector corresponding to the IDs of all items
-#'     to be exported. Change ONLY IF only a subset of items is to be
+#'     to be exported. Change only if only a subset of items is to be
 #'     returned; otherwise do not change the default value `NULL`.
 #' @param itemPrefix By default the function assumes that each item is
 #'     represented in the JSON string by the name "itemx" where x is the
