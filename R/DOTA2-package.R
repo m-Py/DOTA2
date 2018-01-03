@@ -1,17 +1,17 @@
-#' DOMC test analysis.
+#' Discrete option test analysis.
 #'
 #' \tabular{ll}{
 #' Package: \tab DOTA2\cr
 #' Type: \tab Package\cr
-#' Version: \tab 0.0.01\cr
-#' Date: \tab 2017-12-22\cr
+#' Version: \tab 0.0.02\cr
+#' Date: \tab 2018-01-03\cr
 #' Depends: \tab R (>= 3.0.0)\cr
 #' Encoding: \tab UTF-8\cr
 #' License: \tab GPL-3\cr
 #' LazyLoad: \tab yes\cr
 #' }
 #'
-#' Discrete option test analysis
+#' Analyze and simulate responses in sequential DOMC tests
 #'
 #' @aliases DOTA2-package
 #' @name DOTA2-package

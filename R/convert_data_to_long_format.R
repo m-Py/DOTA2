@@ -33,19 +33,19 @@ get_response_table <- function(response_data, test_taker_IDs,
     }
     tmp_list <- list()
     for (i in 1:length(response_data)) {
-        tmp_list[[i]] <- response_table_person(response_data[i],
-                                               test_taker_IDs[i], by_option,
-                                               item_IDs, item_prefix)
+        ## convert json to R data
+        dat_as_list <- get_response_data_person(response_data[i],
+                                                item_IDs, item_prefix)
+        ## convert list to data frame
+        tmp_list[[i]] <- response_table_person(dat_as_list,
+                                               test_taker_IDs[i], by_option)
     }
     return(ldply(tmp_list, data.frame))
 }
 
 # create a long table from responses for one test taker - on item basis
 #' @importFrom plyr ldply
-response_table_person <- function(response_data_person, id, by_option, item_IDs,
-                                  item_prefix) {
-    response_data <- get_response_data_person(response_data_person,
-                                              item_IDs, item_prefix)
+response_table_person <- function(response_data, id, by_option) {
     tmp_list <- list()
     for (i in 1:length(response_data)) {
         if (by_option == FALSE) {

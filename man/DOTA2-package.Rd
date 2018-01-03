@@ -5,21 +5,21 @@
 \alias{DOTA2-package}
 \title{The DOTA2 Package}
 \description{
-DOMC test analysis.
+Discrete option test analysis.
 }
 \details{
 \tabular{ll}{
 Package: \tab DOTA2\cr
 Type: \tab Package\cr
-Version: \tab 0.0.01\cr
-Date: \tab 2017-12-22\cr
+Version: \tab 0.0.02\cr
+Date: \tab 2018-01-03\cr
 Depends: \tab R (>= 3.0.0)\cr
 Encoding: \tab UTF-8\cr
 License: \tab GPL-3\cr
 LazyLoad: \tab yes\cr
 }
 
-Discrete option test analysis
+Analyze and simulate responses in sequential DOMC tests
 }
 \author{
 Martin Papenberg <martin.papenberg@hhu.de>
