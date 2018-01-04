@@ -43,7 +43,7 @@ get_response_table <- function(response_data, test_taker_IDs,
     return(ldply(tmp_list, data.frame))
 }
 
-# create a long table from responses for one test taker - on item basis
+# create a long table from responses for one test taker
 #' @importFrom plyr ldply
 response_table_person <- function(response_data, id, by_option) {
     tmp_list <- list()
