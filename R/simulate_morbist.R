@@ -226,7 +226,7 @@ workDOMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1) {
     itemData <- list()
     itemData[["is_solution"]] <- item # store as: is option solution
     ## store data: 
-    itemData[["decisions"]]   <- vector(length = numberOptions)  # all decisions per item
+    itemData[["decisions"]]   <- rep(NA, numberOptions) # all decisions per item
     itemData[["hit"]]         <- 0
     itemData[["falseAlarm"]]  <- 0
     itemData[["miss"]]        <- 0
@@ -240,10 +240,10 @@ workDOMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1) {
     for (i in 1:numberOptions) {
 
         # 1. Collect evidence on i'th option
-        if (item[[i]] == 0) {
+        if (item[i] == 0) {
             decisionStrength <- rnorm(1, mean=0, sd=sd_dis)
         }
-        else if (item[[i]] == 1 ) {
+        else if (item[i] == 1 ) {
             solutionSeen <- 1 # stopping criterion
             decisionStrength <- rnorm(1, mean=testTaker[["accuracy"]], 
                                       sd=sd_sol)
@@ -262,14 +262,13 @@ workDOMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1) {
 
         # 4. Evaluate decision (if one was made)
         # 4a. determine item response outcome (hit, FA)
-        if (!is.na(itemData[["decisions"]][i])) {
-            if (itemData[["decisions"]][i] == 1 && item[[i]] == 1) {
-                itemData[["hit"]] <- 1
-            }
-            else if (itemData[["decisions"]][i] == 1 && item[[i]] == 0) {
-                itemData[["falseAlarm"]] <- 1
-            }
+        if (itemData[["decisions"]][i] == 1 && item[i] == 1) {
+            itemData[["hit"]] <- 1
         }
+        else if (itemData[["decisions"]][i] == 1 && item[i] == 0) {
+            itemData[["falseAlarm"]] <- 1
+        }
+
         # 4b. determine item response outcome (miss)
         if (i == numberOptions) { # check when all options are through
             if (optionAccepted == 0 && solutionSeen == 1) {
