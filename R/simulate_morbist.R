@@ -35,9 +35,15 @@
 #'
 simulate_morbist <- function(item_number, option_number, n_respondents,
                              type, avg_acc = 1.5, sd_acc = 0.5,
-                             accuracies = NULL, criterion_list,
+                             accuracies = NULL, criterion_list=NULL,
                              sd_sol = 1, sd_dis = 1) {
 
+    ## Some error handling
+    if (type != "mc" && type != "domc") { stop("type must be 'mc' or 'domc'") }
+    if (type == "domc" && is.null(criterion_list )) {
+        stop("A list of response criteria must be passed if domc test is simulated.")
+    }
+    
     ## some renaming due to name change of parameters
     itemNumber   <- item_number
     optionNumber <- option_number
@@ -47,17 +53,15 @@ simulate_morbist <- function(item_number, option_number, n_respondents,
     accuracyList <- accuracies
     criterionList <- criterion_list
     
-    ## Some error handling
-    if (type != "mc" && type != "domc") { stop("type must be 'mc' or 'domc'") }
 
-    ## set up data storage as a list
-    examData   <- list() # just append raw testData to list
+    ## set up data storage as lists
+    examData   <- list() # just append raw testData to a list
     by_item    <- list() # append data in data frame format by item
-    by_option  <- list() # append data in data frame format by option    
+    by_option  <- list() # append data in data frame format by option
 
     # take the test for all test takers 
     for (i in 1:testTakers) {
-        test <- createTest(itemNumber, optionNumber) # this is in loop
+        test <- createTest(itemNumber, optionNumber) 
 
         ## determine response criterion vector for the i'th test taker
         criterionVector <- criterionList[[i]]
@@ -79,7 +83,7 @@ simulate_morbist <- function(item_number, option_number, n_respondents,
         ## Transform data to long data frame format; this iterates over
         ## all items and test-takers once more; bad for performance --
         ## could be prevented if workTest directly returns a data.frame
-        ## instead of a list (maybe?)        
+        ## instead of a list (maybe?)
         by_item[[i]]      <- response_table_person(examData[[i]], i, by_option=FALSE)
         if (type =="domc") {
             by_option[[i]] <- response_table_person(examData[[i]], i, by_option=TRUE)
@@ -375,7 +379,8 @@ createItem <- function(optionNumber) {
 #     options in the to be worked on items
 # 
 # @return A \code{list} that contains the test taker parameters accuracy and 
-#     bias. Bias itself is a \code{list}.
+#     bias. Bias itself is a vector of n values (where n is the number of
+#     response options in the test.
 #
 # @author Martin Papenberg \email{martin.papenberg@@hhu.de}
 #

@@ -5,7 +5,7 @@
 \title{Simulate test responses in the MORBIST model}
 \usage{
 simulate_morbist(item_number, option_number, n_respondents, type,
-  avg_acc = 1.5, sd_acc = 0.5, accuracies = NULL, criterion_list,
+  avg_acc = 1.5, sd_acc = 0.5, accuracies = NULL, criterion_list = NULL,
   sd_sol = 1, sd_dis = 1)
 }
 \arguments{
@@ -36,16 +36,16 @@ avg_acc and sd_acc. Defaults to NULL.}
 \item{sd_dis}{standard deviation of distractor distribution}
 }
 \value{
-a \code{list} containing testData lists as returned by
-\code{\link{workTest}} and test taker accuracy and bias vector
-    \item{data}{\code{list}} of testData returned by \code{\link{workTest}}
-    \item{accuracy}{\code{list} of test taker accuracy values}
-    \item{bias}{\code{list} of test taker response criterion vectors}
+If a DOMC test was simulated: A list containing two data
+    frames in long format - one stores data on item level, the other
+    store response data on option level. If a MC test was simulated:
+    A data.frame in long format storing response data on item level.
 }
 \description{
 Simulates a specified number of test-takers working on a specified
-number of items in MC or DOMC format. The accuracy of test-takers can
-be generated randomly or is passed explicitly.
+number of items in MC or DOMC format. The accuracy values of
+test-takers can be generated randomly by the function or are passed
+explicitly.
 }
 \examples{
 
