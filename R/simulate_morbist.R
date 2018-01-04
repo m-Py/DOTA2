@@ -262,22 +262,20 @@ workDOMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1) {
 
         # 4. Evaluate decision (if one was made)
         # 4a. determine item response outcome (hit, FA)
-        if (itemData[["decisions"]][i] == 1 && item[i] == 1) {
+        if (itemData[["decisions"]][i] == 1 & item[i] == 1) {
             itemData[["hit"]] <- 1
         }
-        else if (itemData[["decisions"]][i] == 1 && item[i] == 0) {
+        else if (itemData[["decisions"]][i] == 1 & item[i] == 0) {
             itemData[["falseAlarm"]] <- 1
         }
 
         # 4b. determine item response outcome (miss)
-        if (i == numberOptions) { # check when all options are through
-            if (optionAccepted == 0 && solutionSeen == 1) {
-                itemData[["miss"]] <- 1
-            }
+        if (optionAccepted == 0 & solutionSeen == 1) {
+            itemData[["miss"]] <- 1
         }
-
+        
         # 5. Check if item presentation is over
-        if (optionAccepted == 1 || solutionSeen == 1) {
+        if (optionAccepted == 1 | solutionSeen == 1) {
             break # do not iterate over more options when item presentation is over
         }
     }
