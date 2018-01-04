@@ -257,7 +257,7 @@ workDOMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1) {
             itemData[["decisions"]][i] <- 0 # -> option not selected
         } else if (decisionStrength >= threshold) {
             optionAccepted <- 1             # stopping criterion
-            itemData[["decisions"]][i] <- 1 # options selected
+            itemData[["decisions"]][i] <- 1 # option selected
         }
 
         # 4. Evaluate decision (if one was made)
