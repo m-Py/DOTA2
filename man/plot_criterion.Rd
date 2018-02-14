@@ -10,9 +10,8 @@ plot_criterion(tab, ylim = c(-1, 1), txt.cords = list(c(1, 0.3), c(2.8,
   0.35)), col = c("black", "red"), xlab = "Position of answer",
   ylab = "Response criterion c", labelCriterion = TRUE, add = FALSE,
   pch = c(16, 15), lty = 1, lwd = 1.3, plotNeutral = TRUE, cex = 1.4,
-  err.bar = NULL, type = "b", txt = paste(colnames(tab),
-  "acceptance reluctance"), labelx = TRUE, dev = 0.07, main = "",
-  lwd_arrow = 1)
+  err.bar = NULL, type = "b", txt = paste(colnames(tab)), labelx = TRUE,
+  dev = 0.07, main = "", lwd_arrow = 1)
 }
 \arguments{
 \item{tab}{A data table with rows = criterion by position (row 1:
