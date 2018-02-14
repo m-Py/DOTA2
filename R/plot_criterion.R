@@ -74,7 +74,7 @@ plot_criterion <- function(tab, ylim=c(-1, 1),
         points(1:nrow(tab)+dev, tab[,levels[2]], col=col[2], type=type,
                pch = pch[2], cex=cex, lwd=lwd)
 
-        axis(side=1, at = 1:nrow(tab), labels = labelx)
+        if (labelx != "") axis(side=1, at = 1:nrow(tab), labels = labelx)
         if (labelCriterion) {
             axis(side=4, at = c(ylim[1], 0, ylim[2]),
                  labels=c("liberal", "neutral", "conservative"),
