@@ -6,7 +6,7 @@ myRlib <- "/home/martin/R/x86_64-pc-linux-gnu-library/3.4/"
 library("roxyPackage")
 roxy.package(
    pck.source.dir=pckDIR,
-   pck.version="0.0.02",
+   pck.version="0.0.03",
    R.libs=myRlib,
    repo.root="~/R/repo/DOTA2",
    pck.description=data.frame(

@@ -12,7 +12,7 @@ plot_criterion(tab, ylim = c(-1, 1), xlim = c(1 - 0.2, nrow(tab) + 0.2),
   labelCriterion = TRUE, add = FALSE, pch = c(16, 15), lty = 1,
   lwd = 1.3, plotNeutral = TRUE, cex = 1.4, err.bar = NULL,
   type = "b", txt = colnames(tab), labelx = TRUE, dev = 0.07,
-  main = "", lwd_arrow = 1)
+  main = "", lwd_arrow = 1, ...)
 }
 \arguments{
 \item{tab}{A data table with rows = criterion by position (row 1:
@@ -70,6 +70,8 @@ different grouping points}
 
 \item{lwd_arrow}{The thickness of the arrow illustrating liberal
 vs. conservative responses}
+
+\item{...}{further arguments passed to `plot`}
 }
 \description{
 Plot the response criterion by option position, possibly using a

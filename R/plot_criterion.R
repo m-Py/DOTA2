@@ -38,6 +38,7 @@
 #' @param main The caption of the plot
 #' @param lwd_arrow The thickness of the arrow illustrating liberal
 #'     vs. conservative responses
+#' @param ... further arguments passed to `plot`
 #' 
 #' @export
 #' 
@@ -54,7 +55,7 @@ plot_criterion <- function(tab, ylim=c(-1, 1),
                            cex=1.4, err.bar = NULL, type="b",
                            txt = colnames(tab),
                            labelx = TRUE, dev = 0.07, main="",
-                           lwd_arrow = 1) {
+                           lwd_arrow = 1, ...) {
 
     levels <- colnames(tab)
     if (!add) {
@@ -66,7 +67,7 @@ plot_criterion <- function(tab, ylim=c(-1, 1),
         plot(1:nrow(tab)-dev, tab[,levels[1]], las=1, ylim=ylim,
              col= "transparent", las=1, type=type, ylab=ylab,
              xaxt = "n", xlab=xlab, xlim = xlim,
-             pch=pch[1], cex=cex, lty=lty, lwd=lwd, main=main)
+             pch=pch[1], cex=cex, lty=lty, lwd=lwd, main=main, ...)
         plot.err.bar(err.bar, tab, dev, col)
         points(1:nrow(tab)-dev, tab[,levels[1]], col=col[1], type=type,
                pch = pch[1], cex=cex, lwd=lwd)
