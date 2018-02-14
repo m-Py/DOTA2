@@ -43,17 +43,18 @@
 #' 
 
 plot_criterion <- function(tab, ylim=c(-1, 1),
-                          txt.cords =list(c(1, 0.3), c(2.8, 0.35)),
-                          col = c("black", "red"),
-                          xlab = "Position of answer", 
-                          ylab ="Response criterion c",
-                          labelCriterion=TRUE, add = FALSE,
-                          pch=c(16, 15), lty=1, lwd=1.3,
-                          plotNeutral=TRUE,
-                          cex=1.4, err.bar = NULL, type="b",
-                          txt = paste(colnames(tab)),
-                          labelx = TRUE, dev = 0.07, main="",
-                          lwd_arrow = 1) {
+                           xlim=c(1-0.2, nrow(tab)+0.2),
+                           txt.cords =list(c(1, 0.3), c(2.8, 0.35)),
+                           col = c("black", "red"),
+                           xlab = "Position of answer", 
+                           ylab ="Response criterion c",
+                           labelCriterion=TRUE, add = FALSE,
+                           pch=c(16, 15), lty=1, lwd=1.3,
+                           plotNeutral=TRUE,
+                           cex=1.4, err.bar = NULL, type="b",
+                           txt = colnames(tab),
+                           labelx = TRUE, dev = 0.07, main="",
+                           lwd_arrow = 1) {
 
     levels <- colnames(tab)
     if (!add) {
@@ -64,7 +65,7 @@ plot_criterion <- function(tab, ylim=c(-1, 1),
         
         plot(1:nrow(tab)-dev, tab[,levels[1]], las=1, ylim=ylim,
              col= "transparent", las=1, type=type, ylab=ylab,
-             xaxt = "n", xlab=xlab, xlim=c(1-0.2, nrow(tab)+0.2),
+             xaxt = "n", xlab=xlab, xlim = xlim,
              pch=pch[1], cex=cex, lty=lty, lwd=lwd, main=main)
         plot.err.bar(err.bar, tab, dev, col)
         points(1:nrow(tab)-dev, tab[,levels[1]], col=col[1], type=type,
