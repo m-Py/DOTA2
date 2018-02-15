@@ -6,13 +6,12 @@
 grouping variable (can also be used to plot any other values in
 dependence of option position and acceptance reluctance)}
 \usage{
-plot_criterion(tab, ylim = c(-1, 1), xlim = c(1 - 0.2, nrow(tab) + 0.2),
-  txt.cords = list(c(1, 0.3), c(2.8, 0.35)), col = c("black", "red"),
-  xlab = "Position of answer", ylab = "Response criterion c",
-  labelCriterion = TRUE, add = FALSE, pch = c(16, 15), lty = 1,
-  lwd = 1.3, plotNeutral = TRUE, cex = 1.4, err.bar = NULL,
-  type = "b", txt = colnames(tab), labelx = TRUE, dev = 0.07,
-  main = "", lwd_arrow = 1, ...)
+plot_criterion(tab, ylim = c(-1, 1), txt.cords = list(c(1, 0.3), c(2.8,
+  0.35)), col = c("black", "red"), xlab = "Position of answer",
+  ylab = "Response criterion c", labelCriterion = TRUE, add = FALSE,
+  pch = c(16, 15), lty = 1, lwd = 1.3, plotNeutral = TRUE, cex = 1.4,
+  err.bar = NULL, type = "b", txt = colnames(tab), labelx = TRUE,
+  dev = 0.07, main = "", lwd_arrow = 1, ...)
 }
 \arguments{
 \item{tab}{A data table with rows = criterion by position (row 1:

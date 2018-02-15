@@ -2,6 +2,7 @@
 #' Plot the response criterion by option position, possibly using a
 #' grouping variable (can also be used to plot any other values in
 #' dependence of option position and acceptance reluctance)
+#' 
 #' @param tab A data table with rows = criterion by position (row 1:
 #'     criterion for option 1) and columns distinguishing different
 #'     levels of grouping factor
@@ -44,7 +45,6 @@
 #' 
 
 plot_criterion <- function(tab, ylim=c(-1, 1),
-                           xlim=c(1-0.2, nrow(tab)+0.2),
                            txt.cords =list(c(1, 0.3), c(2.8, 0.35)),
                            col = c("black", "red"),
                            xlab = "Position of answer", 
