@@ -72,12 +72,12 @@ criterion_c <- function(option.tab, loglinear = TRUE,
 tidy_return <- function(dat, colname) {
     if (nrow(dat) == 1) {
         ret <- data.frame(colname = t(dat)) ## column naming does not work this way
-        ret$id <- rownames(ret)
+        ret$id <- as.numeric(rownames(ret))
         colnames(ret) <- c(colname, "id")
     } else {
         ret <- data.frame(dat)
         colnames(ret) <- 1:ncol(ret)
-        ret$id <- rownames(ret)
+        ret$id <- as.numeric(rownames(ret))
         ## turn to long format
         ret <- melt(ret, id.vars="id", value.name = colname,
                     variable.name = "position")
