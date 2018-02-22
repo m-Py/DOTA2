@@ -8,7 +8,7 @@ Description: Analyze and simulate responses in sequential DOMC tests
 License: GPL-3
 Encoding: UTF-8
 LazyLoad: yes
-Imports: jsonlite, plyr
-Version: 0.0.03
+Imports: jsonlite, plyr, reshape2
+Version: 0.0.04
 Date: 2018-02-22
 RoxygenNote: 6.0.1

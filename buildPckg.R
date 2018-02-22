@@ -6,7 +6,7 @@ myRlib <- "/home/martin2/R/x86_64-pc-linux-gnu-library/3.4/"
 library("roxyPackage")
 roxy.package(
    pck.source.dir=pckDIR,
-   pck.version="0.0.03",
+   pck.version="0.0.04",
    R.libs=myRlib,
    repo.root="~/R/repo/DOTA2",
    pck.description=data.frame(
@@ -21,7 +21,7 @@ roxy.package(
    Encoding="UTF-8",
    LazyLoad="yes",
    stringsAsFactors=FALSE,
-   Imports="jsonlite, plyr")
+   Imports="jsonlite, plyr, reshape2")
 )
 
 # devtools::check()

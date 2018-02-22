@@ -8,6 +8,10 @@ criterion_c(option.tab, loglinear = TRUE, aggregateBy = c("option_position",
   "id"), colnames = c("hit_by_option", "false_alarm_by_option"))
 }
 \arguments{
+\item{option.tab}{A long table containing DOMC response data by
+response option (created by `get_item_table(response_data, IDs,
+by_option = TRUE)`)}
+
 \item{loglinear}{Boolean; should a loglinear correction be applied
 (defaults to TRUE which is *strongly* recommended to compute
 response criteria)}
@@ -20,10 +24,10 @@ test-taker by option.}
 
 \item{colnames}{What are the columns containing hit and false alarm
 scores called? Generally the default should not be changed.}
-
-\item{long.tab}{A long table containing DOMC response data by
-response option (created by `get_item_table(responseDataSample,
-IDs, by_option = TRUE)`)}
+}
+\value{
+A data.frame in long format where each row contains a measure
+    of the response criterion.
 }
 \description{
 Determine response criterion c by option position per test-taker

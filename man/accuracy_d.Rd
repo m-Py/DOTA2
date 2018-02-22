@@ -8,6 +8,10 @@ accuracy_d(option.tab, loglinear = TRUE, aggregateBy = c("id"),
   colnames = c("hit_by_option", "false_alarm_by_option"))
 }
 \arguments{
+\item{option.tab}{A long table containing DOMC response data by
+response option (created by `get_item_table(response_data, IDs,
+by_option = TRUE)`)}
+
 \item{loglinear}{Boolean; should a loglinear correction be applied
 (defaults to `TRUE`)}
 
@@ -18,10 +22,10 @@ each test-taker across all decisions.}
 
 \item{colnames}{Indicates the names of the columns containing the
 hits and false alarms in `long.tab`}
-
-\item{long.tab}{A long table containing DOMC response data by
-response option (created by `get_item_table(responseDataSample,
-IDs, by_option = TRUE)`)}
+}
+\value{
+A data.frame in long format where each row contains a measure
+    of the accuracy parameter.
 }
 \description{
 Determine accuracy d'

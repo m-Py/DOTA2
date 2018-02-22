@@ -3,7 +3,7 @@
 #' \tabular{ll}{
 #' Package: \tab DOTA2\cr
 #' Type: \tab Package\cr
-#' Version: \tab 0.0.03\cr
+#' Version: \tab 0.0.04\cr
 #' Date: \tab 2018-02-22\cr
 #' Depends: \tab R (>= 3.0.0)\cr
 #' Encoding: \tab UTF-8\cr
