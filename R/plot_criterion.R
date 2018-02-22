@@ -66,8 +66,8 @@ plot_criterion <- function(tab, ylim=c(-1, 1),
         
         plot(1:nrow(tab)-dev, tab[,levels[1]], las=1, ylim=ylim,
              col= "transparent", las=1, type=type, ylab=ylab,
-             xaxt = "n", xlab=xlab, xlim = xlim,
-             pch=pch[1], cex=cex, lty=lty, lwd=lwd, main=main, ...)
+             xaxt = "n", xlab=xlab, pch=pch[1],
+             cex=cex, lty=lty, lwd=lwd, main=main, ...)
         plot.err.bar(err.bar, tab, dev, col)
         points(1:nrow(tab)-dev, tab[,levels[1]], col=col[1], type=type,
                pch = pch[1], cex=cex, lwd=lwd)
