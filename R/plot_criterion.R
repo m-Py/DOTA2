@@ -140,8 +140,21 @@ ci95 <- function(x, na.rm = FALSE) {
     return(ci(95, x, na.rm))
 }
 
-# Draw an error bar to a plot
-error.bar <- function(x, y, upper, lower=upper, length=0.1, width = 1.5,
+#' Draw an error bar to a plot
+#'
+#' @param x The x coordinates
+#' @param y The y coordinates
+#' @param upper The upper bound of the error interval (in relation to
+#'     the y-coordinates)
+#' @param lower The lower bound of the error interval (in relation to
+#'     the y-coordinates)
+#' @param length the width of the bar end
+#' @param width the width of the error bar line
+#' @param col The color of the error bar
+#'
+#' @export
+#' 
+error_bar <- function(x, y, upper, lower=upper, length=0.1, width = 1.5,
                       col) {
     if(length(x) != length(y) | length(y) !=length(lower) | length(lower) != length(upper))
         stop("vectors must be same length")
@@ -150,9 +163,9 @@ error.bar <- function(x, y, upper, lower=upper, length=0.1, width = 1.5,
 
 plot.err.bar <- function(err.bar, tab, dev, cols) {
     if (!is.null(err.bar)) {
-        error.bar(1:nrow(tab)-dev, tab[,1], err.bar[,1], col=cols[1],
+        error_bar(1:nrow(tab)-dev, tab[,1], err.bar[,1], col=cols[1],
                   width=1.2, length=0.05)
-        error.bar(1:nrow(tab)+dev, tab[,2], err.bar[,2], col=cols[2],
+        error_bar(1:nrow(tab)+dev, tab[,2], err.bar[,2], col=cols[2],
                   width=1.2, length=0.05)
     }
 }

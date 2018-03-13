@@ -6,7 +6,7 @@
 \usage{
 simulate_morbist(item_number, option_number, n_respondents, type,
   avg_acc = 1.5, sd_acc = 0.5, accuracies = NULL, criterion_list = NULL,
-  sd_sol = 1, sd_dis = 1)
+  sd_sol = 1, sd_dis = 1, option_data = FALSE)
 }
 \arguments{
 \item{item_number}{How many items are simulated for each test-taker}
@@ -34,12 +34,17 @@ avg_acc and sd_acc. Defaults to NULL.}
 \item{sd_sol}{standard deviation of solution distribution}
 
 \item{sd_dis}{standard deviation of distractor distribution}
+
+\item{option_data}{Should response data on option level be returned
+(only works if type is "domc"). This is detrimental for
+performance and defaults to `FALSE`.}
 }
 \value{
-If a DOMC test was simulated: A list containing two data
-    frames in long format - one stores data on item level, the other
-    store response data on option level. If a MC test was simulated:
-    A data.frame in long format storing response data on item level.
+If a DOMC test was simulated and option level data was
+    requested: A list containing two data frames in long format - one
+    stores data on item level, the other store response data on
+    option level. Otherwise: A data.frame in long format storing
+    response data on item level.
 }
 \description{
 Simulates a specified number of test-takers working on a specified

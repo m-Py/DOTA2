@@ -81,6 +81,7 @@ tidy_return <- function(dat, colname) {
         ## turn to long format
         ret <- melt(ret, id.vars="id", value.name = colname,
                     variable.name = "position")
+        ret$position <- as.numeric(ret$position)
     }
     rownames(ret) <- NULL
     return(ret)

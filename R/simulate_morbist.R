@@ -22,11 +22,15 @@
 #'     `testTaker`.
 #' @param sd_sol standard deviation of solution distribution
 #' @param sd_dis standard deviation of distractor distribution
+#' @param option_data Should response data on option level be returned
+#'     (only works if type is "domc"). This is detrimental for
+#'     performance and defaults to `FALSE`.
 #'
-#' @return If a DOMC test was simulated: A list containing two data
-#'     frames in long format - one stores data on item level, the other
-#'     store response data on option level. If a MC test was simulated:
-#'     A data.frame in long format storing response data on item level.
+#' @return If a DOMC test was simulated and option level data was
+#'     requested: A list containing two data frames in long format - one
+#'     stores data on item level, the other store response data on
+#'     option level. Otherwise: A data.frame in long format storing
+#'     response data on item level.
 #'
 #' @examples
 #' 
@@ -36,7 +40,7 @@
 simulate_morbist <- function(item_number, option_number, n_respondents,
                              type, avg_acc = 1.5, sd_acc = 0.5,
                              accuracies = NULL, criterion_list=NULL,
-                             sd_sol = 1, sd_dis = 1) {
+                             sd_sol = 1, sd_dis = 1, option_data = FALSE) {
 
     ## Some error handling
     if (type != "mc" && type != "domc") { stop("type must be 'mc' or 'domc'") }
@@ -61,7 +65,7 @@ simulate_morbist <- function(item_number, option_number, n_respondents,
 
     # take the test for all test takers 
     for (i in 1:testTakers) {
-        test <- createTest(itemNumber, optionNumber) 
+        test <- createTest(itemNumber, optionNumber)
 
         ## determine response criterion vector for the i'th test taker
         criterionVector <- criterionList[[i]]
@@ -85,16 +89,16 @@ simulate_morbist <- function(item_number, option_number, n_respondents,
         ## could be prevented if workTest directly returns a data.frame
         ## instead of a list (maybe?)
         by_item[[i]]      <- response_table_person(examData[[i]], i, by_option=FALSE)
-        if (type =="domc") {
+        if (type =="domc" & option_data == TRUE) {
             by_option[[i]] <- response_table_person(examData[[i]], i, by_option=TRUE)
-        }        
+        }
     }
 
     ## merge all data.frames
     by_item   <- ldply(by_item, data.frame)
 
     ## determine what is returned
-    if (type == "domc") {
+    if (type == "domc" & option_data == TRUE) {
         by_option <- ldply(by_option, data.frame)
         ret_list  <- list(by_item=by_item, by_option=by_option)
     } else {
