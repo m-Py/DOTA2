@@ -4,7 +4,8 @@
 \alias{error_bar}
 \title{Draw an error bar to a plot}
 \usage{
-error_bar(x, y, upper, lower = upper, length = 0.1, width = 1.5, col)
+error_bar(x, y, upper, lower = upper, length = 0.1, width = 1.5,
+  col = "black")
 }
 \arguments{
 \item{x}{The x coordinates}
