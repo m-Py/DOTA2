@@ -106,9 +106,9 @@ domc_analytical <- function(accuracy, criterionVector, n_options=NULL,
         # get probabilities
         probabilities <- vector(length=n_options)
         for (i in 1:n_options) {
-            probabilities[i] <- domcProb(accuracy, criterionVector,
-                                        item=item_combinations[[i]],
-                                        sd_sol=sd_sol)
+            probabilities[i] <- domc_analytical(accuracy, criterionVector,
+                                                item=item_combinations[[i]],
+                                                sd_sol=sd_sol)
         }
         return(mean(probabilities))
     }
@@ -116,10 +116,10 @@ domc_analytical <- function(accuracy, criterionVector, n_options=NULL,
 
 #' Estimate accuracy for a given solving probability
 #' 
-#' This function is the inverse to \code{mcProb} and \code{domcProb}: It
-#' determines the accuracy parameter that corresponds to a given solving
-#' probability. Can be used to infer appropriate accuracy values for
-#' empirical data.
+#' This function is the inverse to \code{mc_analytical} and
+#' \code{domc_analytical}: It determines the accuracy parameter that
+#' corresponds to a given solving probability. Can be used to infer
+#' appropriate accuracy values for empirical data.
 #'
 #' @param probability probability to solve the item correctly (must not
 #'     be 1 or 0)
@@ -144,9 +144,9 @@ estimateAccuracy <- function(probability, n_options=NULL, sd_sol = 1,
     goUp     <- TRUE
     while (steps < 10) {
         if (type == "mc") {
-            estimate <- mcProb(acc, n_options, sd_sol)
+            estimate <- mc_analytical(acc, n_options, sd_sol)
         } else if (type == "domc") {
-            estimate <- domcProb(accuracy=acc,
+            estimate <- domc_analytical(accuracy=acc,
                                 n_options=n_options,
                                 item=item,
                                 criterionVector=criterionVector,

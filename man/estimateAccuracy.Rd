@@ -22,10 +22,10 @@ distribution. Distractor always has SD of 1}
 The estimated accuracy
 }
 \description{
-This function is the inverse to \code{mcProb} and \code{domcProb}: It
-determines the accuracy parameter that corresponds to a given solving
-probability. Can be used to infer appropriate accuracy values for
-empirical data.
+This function is the inverse to \code{mc_analytical} and
+\code{domc_analytical}: It determines the accuracy parameter that
+corresponds to a given solving probability. Can be used to infer
+appropriate accuracy values for empirical data.
 }
 \author{
 Martin Papenberg \email{martin.papenberg@hhu.de}

@@ -7,11 +7,11 @@ grouping variable (can also be used to plot any other values in
 dependence of option position and acceptance reluctance)}
 \usage{
 plot_criterion(tab, ylim = c(-1, 1), txt.cords = list(c(1, 0.3), c(2.8,
-  0.35)), col = c("black", "red"), xlab = "Position of answer",
-  ylab = "Response criterion c", labelCriterion = TRUE, add = FALSE,
-  pch = c(16, 15), lty = 1, lwd = 1.3, plotNeutral = TRUE, cex = 1.4,
-  err.bar = NULL, type = "b", txt = colnames(tab), labelx = TRUE,
-  dev = 0.07, main = "", lwd_arrow = 1, ...)
+  0.35)), xlab = "Position of answer", ylab = "Response criterion c",
+  labelCriterion = TRUE, add = FALSE, lty = 1, lwd = 1.3,
+  plotNeutral = TRUE, cex = 1.4, err.bar = NULL, type = "b",
+  txt = colnames(tab), labelx = TRUE, dev = 0.07, main = "",
+  lwd_arrow = 1, ...)
 }
 \arguments{
 \item{tab}{A data table with rows = criterion by position (row 1:
@@ -24,9 +24,6 @@ levels of grouping factor}
 coordinates specifying where the factor level descriptions are
 printed}
 
-\item{col}{A vector of two colors specifying the coloring of two
-levels of the factor}
-
 \item{xlab}{Label of the x-axis}
 
 \item{ylab}{Label of the y-axis}
@@ -36,8 +33,6 @@ response criterion is labeled as "conservative", "neutral", and
 "liberal"}
 
 \item{add}{Boolean. Should the data be drawn into an existing plot?}
-
-\item{pch}{The type of the data points}
 
 \item{lty}{the type of the lines drawn}
 

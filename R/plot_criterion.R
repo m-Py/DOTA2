@@ -10,15 +10,12 @@
 #' @param txt.cords A `list`, containing two vectors of x and y
 #'     coordinates specifying where the factor level descriptions are
 #'     printed
-#' @param col A vector of two colors specifying the coloring of two
-#'     levels of the factor
 #' @param ylab Label of the y-axis
 #' @param xlab Label of the x-axis
 #' @param labelCriterion boolean value, if `TRUE`, on the right axis the
 #'     response criterion is labeled as "conservative", "neutral", and
 #'     "liberal"
 #' @param add Boolean. Should the data be drawn into an existing plot?
-#' @param pch The type of the data points
 #' @param lty the type of the lines drawn
 #' @param lwd the width of the lines drawn
 #' @param plotNeutral Boolean. Should a horizontal line at y=0 be drawn
@@ -46,11 +43,10 @@
 
 plot_criterion <- function(tab, ylim=c(-1, 1),
                            txt.cords =list(c(1, 0.3), c(2.8, 0.35)),
-                           col = c("black", "red"),
                            xlab = "Position of answer", 
                            ylab ="Response criterion c",
                            labelCriterion=TRUE, add = FALSE,
-                           pch=c(16, 15), lty=1, lwd=1.3,
+                           lty=1, lwd=1.3,
                            plotNeutral=TRUE,
                            cex=1.4, err.bar = NULL, type="b",
                            txt = colnames(tab),
@@ -66,13 +62,18 @@ plot_criterion <- function(tab, ylim=c(-1, 1),
         
         plot(1:nrow(tab)-dev, tab[,levels[1]], las=1, ylim=ylim,
              col= "transparent", las=1, type=type, ylab=ylab,
-             xaxt = "n", xlab=xlab, pch=pch[1],
-             cex=cex, lty=lty, lwd=lwd, main=main, ...)
-        plot.err.bar(err.bar, tab, dev, col)
-        points(1:nrow(tab)-dev, tab[,levels[1]], col=col[1], type=type,
-               pch = pch[1], cex=cex, lwd=lwd)
-        points(1:nrow(tab)+dev, tab[,levels[2]], col=col[2], type=type,
-               pch = pch[2], cex=cex, lwd=lwd)
+             xaxt = "n", xlab=xlab, pch=19, cex=cex, lty=lty,
+             lwd=lwd, main=main, ...)
+        plot.err.bar(err.bar, tab, dev)
+        ## plot data points for first level of factor
+        points(1:nrow(tab)-dev, tab[,levels[1]], col = "black",
+               type=type, pch = 19, cex=cex, lwd=lwd)
+        points(1:nrow(tab)-dev, tab[,levels[1]], col = "white",
+               type=type, pch = 19, cex=cex - 0.6, lwd=lwd)
+        
+        ## plot data points for second level of factor
+        points(1:nrow(tab)+dev, tab[,levels[2]], col = "black", type=type,
+               pch = 19, cex = cex, lwd=lwd)
 
         if (labelx != "") axis(side=1, at = 1:nrow(tab), labels = labelx)
         if (labelCriterion) {
@@ -88,17 +89,20 @@ plot_criterion <- function(tab, ylim=c(-1, 1),
             par(xpd=normal.xpd) # reverse
         }
         if (plotNeutral) abline(h = 0, lwd=1, lty=3)
-        text(txt.cords[[1]][1], txt.cords[[1]][2], txt[1], pos = 4,
-             col = col[1])
-        text(txt.cords[[2]][1], txt.cords[[2]][2], txt[2], pos = 4,
-             col = col[2])
+        text(txt.cords[[1]][1], txt.cords[[1]][2], txt[1], pos = 4)
+        text(txt.cords[[2]][1], txt.cords[[2]][2], txt[2], pos = 4)
         on.exit(par(mar = default.mar))
     } else {
-        plot.err.bar(err.bar, tab, dev, col)
-        points(1:nrow(tab)-dev, tab[,levels[1]], col=col[1], type=type,
-               pch=pch[1], cex=cex, lty=lty, lwd=lwd)
-        points(1:nrow(tab)+dev, tab[,levels[2]], col=col[2], type=type,
-               pch = pch[2], cex=cex, lty=lty, lwd=lwd)
+        plot.err.bar(err.bar, tab, dev)
+        ## plot data points for first level of factor
+        points(1:nrow(tab)-dev, tab[,levels[1]], col = "black",
+               type=type, pch = 19, cex=cex, lwd=lwd)
+        points(1:nrow(tab)-dev, tab[,levels[1]], col = "white",
+               type=type, pch = 19, cex=cex - 0.6, lwd=lwd)
+        
+        ## plot data points for second level of factor
+        points(1:nrow(tab)+dev, tab[,levels[2]], col = "black", type=type,
+               pch = 19, cex = cex, lwd=lwd)
     }
 }
 
@@ -161,11 +165,11 @@ error_bar <- function(x, y, upper, lower=upper, length=0.1, width = 1.5,
     arrows(x,y+upper, x, y-lower, angle=90, code=3, length=length, lwd = width, col=col)
 }
 
-plot.err.bar <- function(err.bar, tab, dev, cols) {
+plot.err.bar <- function(err.bar, tab, dev) {
     if (!is.null(err.bar)) {
-        error_bar(1:nrow(tab)-dev, tab[,1], err.bar[,1], col=cols[1],
-                  width=1.2, length=0.05)
-        error_bar(1:nrow(tab)+dev, tab[,2], err.bar[,2], col=cols[2],
-                  width=1.2, length=0.05)
+        error_bar(1:nrow(tab)-dev, tab[,1], err.bar[,1],
+                  width=1.2, length=0.05, col = "black")
+        error_bar(1:nrow(tab)+dev, tab[,2], err.bar[,2],
+                  width=1.2, length=0.05, col = "black")
     }
 }
