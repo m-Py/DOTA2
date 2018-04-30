@@ -2,7 +2,7 @@
 #' Simulate test responses in the MORBIST model
 #'
 #' Simulates a specified number of test-takers working on a specified
-#' number of items in MC or DOMC format. The accuracy values of
+#' number of items in MC or DOMC format. The accuracy values d' of
 #' test-takers can be generated randomly by the function or are passed
 #' explicitly.
 #'
@@ -20,11 +20,13 @@
 #'     avg_acc and sd_acc. Defaults to NULL.
 #' @param criterion_list A list of criterion vectors of length
 #'     `testTaker`.
-#' @param sd_sol standard deviation of solution distribution
-#' @param sd_dis standard deviation of distractor distribution
+#' @param sd_sol standard deviation of solution distribution (default =
+#'     1.25)
+#' @param sd_dis standard deviation of distractor distribution (default
+#'     = 1)
 #' @param option_data Should response data on option level be returned
-#'     (only works if type is "domc"). This is detrimental for
-#'     performance and defaults to `FALSE`.
+#'     (only works if type is "domc"). This is slows down simulation
+#'     speed; it defaults to `FALSE`.
 #'
 #' @return If a DOMC test was simulated and option level data was
 #'     requested: A list containing two data frames in long format - one
@@ -33,6 +35,19 @@
 #'     response data on item level.
 #'
 #' @examples
+#' ## Prepare input
+#' n = 100
+#' n_items <- 50
+#' n_options <- 5
+#' criteria <- list() # response criteria for DOMC items
+#' for (i in 1:n)  critList.avg[[i]] <- c(rep(0, 4), -Inf)
+#'
+#' ## Simulate DOMC test responses
+#' DOMC_data <- simulate_morbist(n_items, n_options, n, type="domc",
+#'                               criterion_list = criteria)
+#'
+#' ## Simulate MC test responses
+#' MC_data <- simulate_morbist(n_items, n_options, n, type="mc")
 #' 
 #' @author Martin Papenberg \email{martin.papenberg@@hhu.de}
 #' @export 
@@ -40,7 +55,8 @@
 simulate_morbist <- function(item_number, option_number, n_respondents,
                              type, avg_acc = 1.5, sd_acc = 0.5,
                              accuracies = NULL, criterion_list=NULL,
-                             sd_sol = 1, sd_dis = 1, option_data = FALSE) {
+                             sd_sol = 1.25, sd_dis = 1,
+                             option_data = FALSE) {
 
     ## Some error handling
     if (type != "mc" && type != "domc") { stop("type must be 'mc' or 'domc'") }
@@ -85,9 +101,7 @@ simulate_morbist <- function(item_number, option_number, n_respondents,
                                       sd_dis = sd_dis, sd_sol = sd_sol)
 
         ## Transform data to long data frame format; this iterates over
-        ## all items and test-takers once more; bad for performance --
-        ## could be prevented if workTest directly returns a data.frame
-        ## instead of a list (maybe?)
+        ## all items and test-takers once more.
         by_item[[i]]      <- response_table_person(examData[[i]], i, by_option=FALSE)
         if (type =="domc" & option_data == TRUE) {
             by_option[[i]] <- response_table_person(examData[[i]], i, by_option=TRUE)
@@ -121,11 +135,11 @@ simulate_morbist <- function(item_number, option_number, n_respondents,
 #     option number
 # @param type which type of test is be simulated? Must be "mc" 
 #     (multiple-choice) or "domc" (discrete-option multiple-choice)
-# @param sd_sol standard deviation of solution distribution (default = 1)
+# @param sd_sol standard deviation of solution distribution (default = 1.25)
 # @param sd_dis standard deviation of distractor distribution (default = 1)
 #
-# @return a \code{list} containing information on the test and on test taker
-#     responses, these items are stored:
+# @return a \code{list} containing information on the test and on test
+#     taker responses; these items are stored:
 # 
 #   \item{itemNumber}{how many items were on the test}
 #   \item{optionNumber}{how many options did every item have}
@@ -134,7 +148,7 @@ simulate_morbist <- function(item_number, option_number, n_respondents,
 #
 # @author Martin Papenberg \email{martin.papenberg@@hhu.de}
 #
-workTest <- function(testTaker, test, type, sd_dis = 1, sd_sol = 1) {
+workTest <- function(testTaker, test, type, sd_dis = 1, sd_sol = 1.25) {
     ## Some error handling
     if (type != "mc" && type != "domc") {
         stop("argument type must be 'mc' or 'domc'") 
@@ -217,7 +231,7 @@ createTest <- function(itemNumber, optionNumber) {
 # @author Martin Papenberg \email{martin.papenberg@@hhu.de}
 #
 #
-workDOMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1) {
+workDOMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1.25) {
 
     numberOptions <- length(item)
 
@@ -312,9 +326,8 @@ workDOMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1) {
 #    \code{\link{createTestTaker}}
 # @param item item that is be to processed, created via 
 #    \code{\link{createItem}}
-# @param equalVariances Boolean. Are distribution variances for solutions and
-#    distractors assumed to be equal or not. If false, distribution variance 
-#    for solutions is 1.25.
+# @param sd_sol standard deviation of solution distribution
+# @param sd_dis standard deviation of distractor distribution
 #
 # @return A vector of length 1. 1 indicates the item was solved correctly, 
 #    0 indicates it was not solved correctly.
@@ -322,7 +335,7 @@ workDOMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1) {
 # @author Martin Papenberg \email{martin.papenberg@@hhu.de}
 #
 
-workMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1) {
+workMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1.25) {
 
     highestStrength  <- -Inf # initialize
     item_correct     <- 0
@@ -354,11 +367,11 @@ workMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1) {
 #
 # Creates an item that can be true-false-like or multiple-choice-like
 #
-# @param optionNumber How many options should the item have. At least two 
-#    options must be given.
+# @param optionNumber How many options should the item have. At least
+#    two options must be given.
 #
-# @return A vector of length `optionNumber` of values 0 and 1. 1 represents 
-#    a solution, and 0 represents a distractor.
+# @return A vector of length `optionNumber` of values 0 and 1. 1
+#    represents a solution, and 0 represents a distractor.
 #
 # @author Martin Papenberg \email{martin.papenberg@@hhu.de}
 # @export 

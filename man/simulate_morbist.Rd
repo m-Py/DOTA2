@@ -6,7 +6,7 @@
 \usage{
 simulate_morbist(item_number, option_number, n_respondents, type,
   avg_acc = 1.5, sd_acc = 0.5, accuracies = NULL, criterion_list = NULL,
-  sd_sol = 1, sd_dis = 1, option_data = FALSE)
+  sd_sol = 1.25, sd_dis = 1, option_data = FALSE)
 }
 \arguments{
 \item{item_number}{How many items are simulated for each test-taker}
@@ -31,13 +31,15 @@ avg_acc and sd_acc. Defaults to NULL.}
 \item{criterion_list}{A list of criterion vectors of length
 `testTaker`.}
 
-\item{sd_sol}{standard deviation of solution distribution}
+\item{sd_sol}{standard deviation of solution distribution (default =
+1.25)}
 
-\item{sd_dis}{standard deviation of distractor distribution}
+\item{sd_dis}{standard deviation of distractor distribution (default
+= 1)}
 
 \item{option_data}{Should response data on option level be returned
-(only works if type is "domc"). This is detrimental for
-performance and defaults to `FALSE`.}
+(only works if type is "domc"). This is slows down simulation
+speed; it defaults to `FALSE`.}
 }
 \value{
 If a DOMC test was simulated and option level data was
@@ -48,11 +50,24 @@ If a DOMC test was simulated and option level data was
 }
 \description{
 Simulates a specified number of test-takers working on a specified
-number of items in MC or DOMC format. The accuracy values of
+number of items in MC or DOMC format. The accuracy values d' of
 test-takers can be generated randomly by the function or are passed
 explicitly.
 }
 \examples{
+## Prepare input
+n = 100
+n_items <- 50
+n_options <- 5
+criteria <- list() # response criteria for DOMC items
+for (i in 1:n)  critList.avg[[i]] <- c(rep(0, 4), -Inf)
+
+## Simulate DOMC test responses
+DOMC_data <- simulate_morbist(n_items, n_options, n, type="domc",
+                              criterion_list = criteria)
+
+## Simulate MC test responses
+MC_data <- simulate_morbist(n_items, n_options, n, type="mc")
 
 }
 \author{
