@@ -60,7 +60,7 @@ n = 100
 n_items <- 50
 n_options <- 5
 criteria <- list() # response criteria for DOMC items
-for (i in 1:n)  critList.avg[[i]] <- c(rep(0, 4), -Inf)
+for (i in 1:n)  criteria[[i]] <- c(rep(0, 4), -Inf)
 
 ## Simulate DOMC test responses
 DOMC_data <- simulate_morbist(n_items, n_options, n, type="domc",
