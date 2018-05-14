@@ -46,6 +46,9 @@ plot_morbist <- function(x, y, showCriterion = TRUE,
                          distLabelDistributions = 2.3,
                          showAccuracy = TRUE, distAccLabel = 0.46) {
 
+    ## determine the intersection of distractor and solution curve
+    intersection <- get_intersection(x, sd_sol)
+    
     ## functions to illustrate distractor and solution normal
     ## distribution:
     curve_sol <- function(d) dnorm(d, x, sd_sol)
@@ -78,10 +81,10 @@ plot_morbist <- function(x, y, showCriterion = TRUE,
     if (showCriterion == TRUE) {       
         crt <- y
         for (i in 1:length(crt)) {
-            lines(rep(x/2 + crt[i], 2), c(0, 0.41), lwd = 2,
+            lines(rep(intersection + crt[i], 2), c(0, 0.41), lwd = 2,
                   col = colorr)
             if (labelCriterion) {
-                text(x/2 + crt[i], distCritLabel, 
+                text(intersection + crt[i], distCritLabel, 
                      bquote(italic("c") [.(i)]), cex=cex.crit)
             }
         }
@@ -97,8 +100,15 @@ plot_morbist <- function(x, y, showCriterion = TRUE,
         heightaccrr <- distAccLabel
         arrows(0, heightaccrr, x, heightaccrr)
         arrows(x, heightaccrr, 0, heightaccrr)
-        text(x/2, heightaccrr+0.025, bquote(italic("d'") ~"=" ~.(x)), cex=cex.acc)
+        text(intersection, heightaccrr+0.025, bquote(italic("d'") ~"=" ~.(x)), cex=cex.acc)
         par(xpd=normal.xpd) # reverse
     }
     on.exit(par(mar = def_mar))
+}
+
+## determine the intersection of distractor and solution curve
+get_intersection <- function(d_prime, sd_sol) {
+    f <- function(x) dnorm(x, m=0, sd=1) - dnorm(x, m=d_prime, sd=sd_sol)
+    intersection <- uniroot(f, interval=c(0, sd_sol))$root
+    return(intersection)
 }

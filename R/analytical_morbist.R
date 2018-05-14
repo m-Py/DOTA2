@@ -14,7 +14,7 @@
 #' @author Martin Papenberg \email{martin.papenberg@@hhu.de}
 #'
 #' @export
-mc_analytical <- function(accuracy, n_options=4, sd_sol=1) {
+mc_analytical <- function(accuracy, n_options=4, sd_sol=1.25) {
     ## for large accuracy the function is not reliable
     if (accuracy > 15) {
         stop("do not use accuracy values greater than 15")
@@ -56,7 +56,7 @@ mc_analytical <- function(accuracy, n_options=4, sd_sol=1) {
 #' @export
 
 domc_analytical <- function(accuracy, criterionVector, n_options=NULL, 
-                            item=NULL, sd_sol=1) {
+                            item=NULL, sd_sol=1.25) {
 
     if (is.null(n_options) && is.null(item)) {
         stop("Error: one of 'n_options' or 'item' must be given.")
@@ -64,9 +64,13 @@ domc_analytical <- function(accuracy, criterionVector, n_options=NULL,
     if (!is.null(n_options) && !is.null(item)) {
         stop("Error: give only one of the parameters 'n_options' and 'item'.")
     }
+
+    ## compute intersection of distractor and solution distribution
+    intersection <- get_intersection(accuracy, sd_sol)
+    
     ## case: item is given
     if (is.null(n_options)) {
-        thresholds <- accuracy/2 + criterionVector
+        thresholds <- intersection + criterionVector
         ## distibution means for all answer options
         dis_mean <- item * accuracy
         ## standard deviations of distributions

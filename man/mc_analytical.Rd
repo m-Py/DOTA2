@@ -4,7 +4,7 @@
 \alias{mc_analytical}
 \title{Probability that a MC item is solved correctly given accuracy.}
 \usage{
-mc_analytical(accuracy, n_options = 4, sd_sol = 1)
+mc_analytical(accuracy, n_options = 4, sd_sol = 1.25)
 }
 \arguments{
 \item{accuracy}{Accuracy value of an assumed test taker}

@@ -254,6 +254,9 @@ workDOMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1.25) {
     optionAccepted <- 0      # keep track: has an option been accepted
     solutionSeen   <- 0      # keep track: has solution been seen
 
+    ## compute intersection of distractor and solution curve
+    intersection <- get_intersection( testTaker[["accuracy"]], sd_sol)
+    
     # Start working on the item
     for (i in 1:numberOptions) {
 
@@ -267,7 +270,7 @@ workDOMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1.25) {
                                       sd=sd_sol)
         }
         ## compute threshold for the i'th option
-        threshold <- testTaker[["accuracy"]]/2 + testTaker[["bias"]][i]
+        threshold <- intersection + testTaker[["bias"]][i]
 
         ## 3. Decision process -> does i'th option surpass threshold?
         ## response criterion is not surpassed

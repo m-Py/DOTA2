@@ -6,7 +6,7 @@
 criterion vector.}
 \usage{
 domc_analytical(accuracy, criterionVector, n_options = NULL, item = NULL,
-  sd_sol = 1)
+  sd_sol = 1.25)
 }
 \arguments{
 \item{accuracy}{Accuracy value of an assumed test taker}
