@@ -3,7 +3,7 @@
 #'
 #' Plots decision variable distribution of targets and and lures
 #' (assuming a normal distribution of evidence) for a test-taker; can
-#' also indicate a response criterion vector
+#' also illustrate a response criterion vector
 #'
 #' @param x An accuracy value (d')
 #' @param y The response criterion vector
@@ -20,8 +20,8 @@
 #' @param cex.label controls magnification the text of the criterion
 #'     labels
 #' @param cex.acc controls magnification the accuracy label
-#'
 #' @param caption label for decision variable axis (x-axis)
+#' @param sd_sol The standard deviation of the solution distribution
 #' @param solutions caption for solution distribution
 #' @param distractors caption for distractor distribution
 #' @param distLabelDistributions how away from the distribution plots

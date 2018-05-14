@@ -36,6 +36,8 @@ and "distractors" and "solutions" text}
 
 \item{solutions}{caption for solution distribution}
 
+\item{sd_sol}{The standard deviation of the solution distribution}
+
 \item{distractors}{caption for distractor distribution}
 
 \item{distLabelDistributions}{how away from the distribution plots
@@ -57,7 +59,7 @@ None
 \description{
 Plots decision variable distribution of targets and and lures
 (assuming a normal distribution of evidence) for a test-taker; can
-also indicate a response criterion vector
+also illustrate a response criterion vector
 }
 \author{
 Martin Papenberg \email{martin.papenberg@hhu.de}
