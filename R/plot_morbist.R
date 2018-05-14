@@ -109,6 +109,6 @@ plot_morbist <- function(x, y, showCriterion = TRUE,
 ## determine the intersection of distractor and solution curve
 get_intersection <- function(d_prime, sd_sol) {
     f <- function(x) dnorm(x, m=0, sd=1) - dnorm(x, m=d_prime, sd=sd_sol)
-    intersection <- uniroot(f, interval=c(0, sd_sol))$root
+    intersection <- uniroot(f, interval=c(0, d_prime))$root
     return(intersection)
 }
