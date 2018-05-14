@@ -6,7 +6,7 @@
 \usage{
 simulate_morbist(item_number, option_number, n_respondents, type,
   avg_acc = 1.5, sd_acc = 0.5, accuracies = NULL, criterion_list = NULL,
-  sd_sol = 1.25, sd_dis = 1, option_data = FALSE)
+  sd_sol = 1.25, option_data = FALSE)
 }
 \arguments{
 \item{item_number}{How many items are simulated for each test-taker}
@@ -33,9 +33,6 @@ avg_acc and sd_acc. Defaults to NULL.}
 
 \item{sd_sol}{standard deviation of solution distribution (default =
 1.25)}
-
-\item{sd_dis}{standard deviation of distractor distribution (default
-= 1)}
 
 \item{option_data}{Should response data on option level be returned
 (only works if type is "domc"). This is slows down simulation

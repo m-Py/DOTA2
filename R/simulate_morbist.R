@@ -22,8 +22,6 @@
 #'     `testTaker`.
 #' @param sd_sol standard deviation of solution distribution (default =
 #'     1.25)
-#' @param sd_dis standard deviation of distractor distribution (default
-#'     = 1)
 #' @param option_data Should response data on option level be returned
 #'     (only works if type is "domc"). This is slows down simulation
 #'     speed; it defaults to `FALSE`.
@@ -55,8 +53,7 @@
 simulate_morbist <- function(item_number, option_number, n_respondents,
                              type, avg_acc = 1.5, sd_acc = 0.5,
                              accuracies = NULL, criterion_list=NULL,
-                             sd_sol = 1.25, sd_dis = 1,
-                             option_data = FALSE) {
+                             sd_sol = 1.25, option_data = FALSE) {
 
     ## Some error handling
     if (type != "mc" && type != "domc") { stop("type must be 'mc' or 'domc'") }
@@ -97,8 +94,7 @@ simulate_morbist <- function(item_number, option_number, n_respondents,
         }
 
         ## Work test
-        examData[[i]]     <- workTest(tmpTestee, test, type, 
-                                      sd_dis = sd_dis, sd_sol = sd_sol)
+        examData[[i]]     <- workTest(tmpTestee, test, type, sd_sol = sd_sol)
 
         ## Transform data to long data frame format; this iterates over
         ## all items and test-takers once more.
@@ -136,7 +132,6 @@ simulate_morbist <- function(item_number, option_number, n_respondents,
 # @param type which type of test is be simulated? Must be "mc" 
 #     (multiple-choice) or "domc" (discrete-option multiple-choice)
 # @param sd_sol standard deviation of solution distribution (default = 1.25)
-# @param sd_dis standard deviation of distractor distribution (default = 1)
 #
 # @return a \code{list} containing information on the test and on test
 #     taker responses; these items are stored:
@@ -148,7 +143,7 @@ simulate_morbist <- function(item_number, option_number, n_respondents,
 #
 # @author Martin Papenberg \email{martin.papenberg@@hhu.de}
 #
-workTest <- function(testTaker, test, type, sd_dis = 1, sd_sol = 1.25) {
+workTest <- function(testTaker, test, type, sd_sol = 1.25) {
     ## Some error handling
     if (type != "mc" && type != "domc") {
         stop("argument type must be 'mc' or 'domc'") 
@@ -166,13 +161,13 @@ workTest <- function(testTaker, test, type, sd_dis = 1, sd_sol = 1.25) {
     for (i in 1:numberItems) { # work on as many items as there are in the test
         if (type == "domc") {
             testData[[paste0("item", i)]] <- workDOMCItem(testTaker, items[[i]], 
-                                                          sd_dis = sd_dis, sd_sol = sd_sol)
+                                                          sd_sol = sd_sol)
             ## some additional data storage here:
             testData[[paste0("item", i)]]$d_prime <- testTaker[["accuracy"]]
             testData[[paste0("item", i)]]$criterion_c <- testTaker[["testTakerBias"]]
         } else if (type == "mc") {
             testData[[paste0("item", i)]] <- workMCItem(testTaker, items[[i]],
-                                                        sd_dis = sd_dis, sd_sol = sd_sol)
+                                                        sd_sol = sd_sol)
             testData[[paste0("item", i)]]$d_prime <- testTaker[["accuracy"]]
         }
     }
@@ -217,7 +212,6 @@ createTest <- function(itemNumber, optionNumber) {
 # @param item item that is be to processed, created via 
 #     \code{\link{createItem}}
 # @param sd_sol standard deviation of solution distribution
-# @param sd_dis standard deviation of distractor distribution
 #
 # @return A \code{list}, which represents response decisions and 
 #     outcome for the item
@@ -231,7 +225,7 @@ createTest <- function(itemNumber, optionNumber) {
 # @author Martin Papenberg \email{martin.papenberg@@hhu.de}
 #
 #
-workDOMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1.25) {
+workDOMCItem <- function(testTaker, item, sd_sol = 1.25) {
 
     numberOptions <- length(item)
 
@@ -262,7 +256,7 @@ workDOMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1.25) {
 
         # 1. Collect evidence on i'th option
         if (item[i] == 0) {
-            decisionStrength <- rnorm(1, mean=0, sd=sd_dis)
+            decisionStrength <- rnorm(1, mean=0, sd=1)
         }
         else if (item[i] == 1 ) {
             solutionSeen <- 1 # stopping criterion
@@ -330,7 +324,6 @@ workDOMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1.25) {
 # @param item item that is be to processed, created via 
 #    \code{\link{createItem}}
 # @param sd_sol standard deviation of solution distribution
-# @param sd_dis standard deviation of distractor distribution
 #
 # @return A vector of length 1. 1 indicates the item was solved correctly, 
 #    0 indicates it was not solved correctly.
@@ -338,7 +331,7 @@ workDOMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1.25) {
 # @author Martin Papenberg \email{martin.papenberg@@hhu.de}
 #
 
-workMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1.25) {
+workMCItem <- function(testTaker, item, sd_sol = 1.25) {
 
     highestStrength  <- -Inf # initialize
     item_correct     <- 0
@@ -346,7 +339,7 @@ workMCItem <- function(testTaker, item, sd_dis = 1, sd_sol = 1.25) {
     numberOptions <- length(item)
     for (i in 1:numberOptions) {
         if (item[i] == 0 ) { # distractor is evaluated
-            decisionStrength <- rnorm(1, mean=0, sd=sd_dis)
+            decisionStrength <- rnorm(1, mean=0, sd=1)
             # tiebreaker: same decision strength, earlier option gets chosen 
             # (this will not happen)
             if (decisionStrength > highestStrength ) { 
