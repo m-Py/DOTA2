@@ -7,7 +7,7 @@
 plot_morbist(x, y, showCriterion = TRUE, labelCriterion = FALSE,
   distCritLabel = 0.425, cex.axis = 1, cex.label = 1, cex.crit = 1,
   cex.acc = 1, caption = "evidence strength", solutions = "solutions",
-  sd_sol = 1, distractors = "distractors", distLabelDistributions = 2.3,
+  distractors = "distractors", distLabelDistributions = 2.3,
   showAccuracy = TRUE, distAccLabel = 0.46)
 }
 \arguments{
@@ -35,8 +35,6 @@ and "distractors" and "solutions" text}
 \item{caption}{label for decision variable axis (x-axis)}
 
 \item{solutions}{caption for solution distribution}
-
-\item{sd_sol}{The standard deviation of the solution distribution}
 
 \item{distractors}{caption for distractor distribution}
 

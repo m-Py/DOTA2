@@ -21,7 +21,6 @@
 #'     labels
 #' @param cex.acc controls magnification the accuracy label
 #' @param caption label for decision variable axis (x-axis)
-#' @param sd_sol The standard deviation of the solution distribution
 #' @param solutions caption for solution distribution
 #' @param distractors caption for distractor distribution
 #' @param distLabelDistributions how away from the distribution plots
@@ -41,17 +40,17 @@ plot_morbist <- function(x, y, showCriterion = TRUE,
                          labelCriterion = FALSE, distCritLabel = 0.425,
                          cex.axis = 1, cex.label = 1, cex.crit = 1,
                          cex.acc = 1, caption = "evidence strength",
-                         solutions="solutions", sd_sol = 1,
+                         solutions="solutions", 
                          distractors="distractors",
                          distLabelDistributions = 2.3,
                          showAccuracy = TRUE, distAccLabel = 0.46) {
 
     ## determine the intersection of distractor and solution curve
-    intersection <- get_intersection(x, sd_sol)
+    intersection <- x/2
     
     ## functions to illustrate distractor and solution normal
     ## distribution:
-    curve_sol <- function(d) dnorm(d, x, sd_sol)
+    curve_sol <- function(d) dnorm(d, x, 1)
     curve_dis <- function(d) dnorm(d, 0, 1)
 
     ## set the area in which the plot is drawn
@@ -104,11 +103,4 @@ plot_morbist <- function(x, y, showCriterion = TRUE,
         par(xpd=normal.xpd) # reverse
     }
     on.exit(par(mar = def_mar))
-}
-
-## determine the intersection of distractor and solution curve
-get_intersection <- function(d_prime, sd_sol) {
-    f <- function(x) dnorm(x, m=0, sd=1) - dnorm(x, m=d_prime, sd=sd_sol)
-    intersection <- uniroot(f, interval=c(0, d_prime))$root
-    return(intersection)
 }

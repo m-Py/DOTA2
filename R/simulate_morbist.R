@@ -20,8 +20,6 @@
 #'     avg_acc and sd_acc. Defaults to NULL.
 #' @param criterion_list A list of criterion vectors of length
 #'     `testTaker`.
-#' @param sd_sol standard deviation of solution distribution (default =
-#'     1.25)
 #' @param option_data Should response data on option level be returned
 #'     (only works if type is "domc"). This is slows down simulation
 #'     speed; it defaults to `FALSE`.
@@ -53,8 +51,8 @@
 simulate_morbist <- function(item_number, option_number, n_respondents,
                              type, avg_acc = 1.5, sd_acc = 0.5,
                              accuracies = NULL, criterion_list=NULL,
-                             sd_sol = 1.25, option_data = FALSE) {
-
+                             option_data = FALSE) {
+    
     ## Some error handling
     if (type != "mc" && type != "domc") { stop("type must be 'mc' or 'domc'") }
     if (type == "domc" && is.null(criterion_list )) {
@@ -70,32 +68,32 @@ simulate_morbist <- function(item_number, option_number, n_respondents,
     accuracyList <- accuracies
     criterionList <- criterion_list
     
-
+    
     ## set up data storage as lists
     examData   <- list() # just append raw testData to a list
     by_item    <- list() # append data in data frame format by item
     by_option  <- list() # append data in data frame format by option
-
+    
     # take the test for all test takers 
     for (i in 1:testTakers) {
         test <- createTest(itemNumber, optionNumber)
-
+        
         ## determine response criterion vector for the i'th test taker
         criterionVector <- criterionList[[i]]
-
+        
         ## Determine accuracy 
         ## a) a custom accuracy vector has been given
         if (!is.null(accuracyList)) {
             tmpTestee <- createTestTaker(accuracyList[i], criterionVector)
-        ## b) accuracy is drawn from a normal distribution
+            ## b) accuracy is drawn from a normal distribution
         } else { 
             tmpTestee <- createTestTaker(rnorm(1, mean=avgAcc, sd=sdAcc),
                                          criterionVector)
         }
-
+        
         ## Work test
-        examData[[i]]     <- workTest(tmpTestee, test, type, sd_sol = sd_sol)
-
+        examData[[i]]     <- workTest(tmpTestee, test, type)
+        
         ## Transform data to long data frame format; this iterates over
         ## all items and test-takers once more.
         by_item[[i]]      <- response_table_person(examData[[i]], i, by_option=FALSE)
@@ -103,10 +101,10 @@ simulate_morbist <- function(item_number, option_number, n_respondents,
             by_option[[i]] <- response_table_person(examData[[i]], i, by_option=TRUE)
         }
     }
-
+    
     ## merge all data.frames
     by_item   <- ldply(by_item, data.frame)
-
+    
     ## determine what is returned
     if (type == "domc" & option_data == TRUE) {
         by_option <- ldply(by_option, data.frame)
@@ -131,7 +129,6 @@ simulate_morbist <- function(item_number, option_number, n_respondents,
 #     option number
 # @param type which type of test is be simulated? Must be "mc" 
 #     (multiple-choice) or "domc" (discrete-option multiple-choice)
-# @param sd_sol standard deviation of solution distribution (default = 1.25)
 #
 # @return a \code{list} containing information on the test and on test
 #     taker responses; these items are stored:
@@ -143,31 +140,29 @@ simulate_morbist <- function(item_number, option_number, n_respondents,
 #
 # @author Martin Papenberg \email{martin.papenberg@@hhu.de}
 #
-workTest <- function(testTaker, test, type, sd_sol = 1.25) {
+workTest <- function(testTaker, test, type) {
     ## Some error handling
     if (type != "mc" && type != "domc") {
         stop("argument type must be 'mc' or 'domc'") 
     }
-
+    
     ## List to be returned:
     testData            <- list()
-
+    
     numberItems    <- test[["itemNumber"]]
     numberOptions  <- test[["optionNumber"]]
     items          <- test[["items"]]
-
+    
     ## Store number of items and options as entry in test data list
-
+    
     for (i in 1:numberItems) { # work on as many items as there are in the test
         if (type == "domc") {
-            testData[[paste0("item", i)]] <- workDOMCItem(testTaker, items[[i]], 
-                                                          sd_sol = sd_sol)
+            testData[[paste0("item", i)]] <- workDOMCItem(testTaker, items[[i]])
             ## some additional data storage here:
             testData[[paste0("item", i)]]$d_prime <- testTaker[["accuracy"]]
             testData[[paste0("item", i)]]$criterion_c <- testTaker[["testTakerBias"]]
         } else if (type == "mc") {
-            testData[[paste0("item", i)]] <- workMCItem(testTaker, items[[i]],
-                                                        sd_sol = sd_sol)
+            testData[[paste0("item", i)]] <- workMCItem(testTaker, items[[i]])
             testData[[paste0("item", i)]]$d_prime <- testTaker[["accuracy"]]
         }
     }
@@ -211,7 +206,6 @@ createTest <- function(itemNumber, optionNumber) {
 #     created via \code{\link{createTestTaker}}
 # @param item item that is be to processed, created via 
 #     \code{\link{createItem}}
-# @param sd_sol standard deviation of solution distribution
 #
 # @return A \code{list}, which represents response decisions and 
 #     outcome for the item
@@ -225,10 +219,10 @@ createTest <- function(itemNumber, optionNumber) {
 # @author Martin Papenberg \email{martin.papenberg@@hhu.de}
 #
 #
-workDOMCItem <- function(testTaker, item, sd_sol = 1.25) {
-
+workDOMCItem <- function(testTaker, item) {
+    
     numberOptions <- length(item)
-
+    
     if (numberOptions != length(testTaker[["bias"]])) {
         stop(paste("Number of answer options in DOMC item", 
                    "and length of criterion vector differ."))
@@ -243,29 +237,25 @@ workDOMCItem <- function(testTaker, item, sd_sol = 1.25) {
     itemData[["falseAlarm"]]  <- 0
     itemData[["miss"]]        <- 0
     itemData[["position_solution"]]  <- which(item == 1)
-
+    
     ## to track the response process:
     optionAccepted <- 0      # keep track: has an option been accepted
     solutionSeen   <- 0      # keep track: has solution been seen
-
-    ## compute intersection of distractor and solution curve
-    intersection <- get_intersection( testTaker[["accuracy"]], sd_sol)
     
     # Start working on the item
     for (i in 1:numberOptions) {
-
+        
         # 1. Collect evidence on i'th option
         if (item[i] == 0) {
             decisionStrength <- rnorm(1, mean=0, sd=1)
         }
         else if (item[i] == 1 ) {
             solutionSeen <- 1 # stopping criterion
-            decisionStrength <- rnorm(1, mean=testTaker[["accuracy"]], 
-                                      sd=sd_sol)
+            decisionStrength <- rnorm(1, mean=testTaker[["accuracy"]], sd=1)
         }
         ## compute threshold for the i'th option
-        threshold <- intersection + testTaker[["bias"]][i]
-
+        threshold <- testTaker[["accuracy"]]/2 + testTaker[["bias"]][i]
+        
         ## 3. Decision process -> does i'th option surpass threshold?
         ## response criterion is not surpassed
         if (decisionStrength < threshold) {
@@ -274,7 +264,7 @@ workDOMCItem <- function(testTaker, item, sd_sol = 1.25) {
             optionAccepted <- 1             # stopping criterion
             itemData[["decisions"]][i] <- 1 # option selected
         }
-
+        
         # 4. Evaluate decision (if one was made)
         # 4a. determine item response outcome (hit, FA)
         if (itemData[["decisions"]][i] == 1 & item[i] == 1) {
@@ -283,7 +273,7 @@ workDOMCItem <- function(testTaker, item, sd_sol = 1.25) {
         else if (itemData[["decisions"]][i] == 1 & item[i] == 0) {
             itemData[["falseAlarm"]] <- 1
         }
-
+        
         # 4b. determine item response outcome (miss)
         if (optionAccepted == 0 & solutionSeen == 1) {
             itemData[["miss"]] <- 1
@@ -301,11 +291,11 @@ workDOMCItem <- function(testTaker, item, sd_sol = 1.25) {
     itemData[["selected"]] <- itemData[["decisions"]]
     itemData[["hit_by_option"]] <- as.numeric(itemData[["decisions"]] & itemData[["is_solution"]])
     itemData[["false_alarm_by_option"]] <- as.numeric(itemData[["decisions"]] &
-                                                      !itemData[["is_solution"]])
+                                                          !itemData[["is_solution"]])
     itemData[["option_position"]] <- 1:numberOptions
     itemData[["correct"]]         <-  itemData[["hit"]] 
     itemData[["false_alarm"]]  <- itemData[["falseAlarm"]]
-
+    
     ## these were only renamed to have consistent data api:
     itemData[["hit"]] <- NULL
     itemData[["falseAlarm"]] <- NULL
@@ -323,7 +313,6 @@ workDOMCItem <- function(testTaker, item, sd_sol = 1.25) {
 #    \code{\link{createTestTaker}}
 # @param item item that is be to processed, created via 
 #    \code{\link{createItem}}
-# @param sd_sol standard deviation of solution distribution
 #
 # @return A vector of length 1. 1 indicates the item was solved correctly, 
 #    0 indicates it was not solved correctly.
@@ -331,11 +320,11 @@ workDOMCItem <- function(testTaker, item, sd_sol = 1.25) {
 # @author Martin Papenberg \email{martin.papenberg@@hhu.de}
 #
 
-workMCItem <- function(testTaker, item, sd_sol = 1.25) {
-
+workMCItem <- function(testTaker, item) {
+    
     highestStrength  <- -Inf # initialize
     item_correct     <- 0
-
+    
     numberOptions <- length(item)
     for (i in 1:numberOptions) {
         if (item[i] == 0 ) { # distractor is evaluated
@@ -348,8 +337,7 @@ workMCItem <- function(testTaker, item, sd_sol = 1.25) {
             }
         }
         else if (item[i] == 1 ) { # solution is evaluated
-            decisionStrength <- rnorm(1, mean=testTaker[["accuracy"]],
-                                      sd=sd_sol)
+            decisionStrength <- rnorm(1, mean=testTaker[["accuracy"]], sd=1)
             if (decisionStrength > highestStrength ) {
                 highestStrength <- decisionStrength
                 item_correct <- 1
