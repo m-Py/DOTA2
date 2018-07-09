@@ -11,7 +11,8 @@ plot_criterion(tab, ylim = c(-1, 1), txt.cords = list(c(1, 0.3), c(2.8,
   labelCriterion = TRUE, add = FALSE, lty = 1, lwd = 1.3,
   plotNeutral = TRUE, cex = 1.4, err.bar = NULL, type = "b",
   txt = colnames(tab), labelx = TRUE, dev = 0.07, main = "",
-  lwd_arrow = 1, ...)
+  lwd_arrow = 1, xlim = c(1, nrow(tab)), cex.lab = 1, cex.axis = 1,
+  german = FALSE, cex_crit_label = 1, cex_factors = 1)
 }
 \arguments{
 \item{tab}{A data table with rows = criterion by position (row 1:
@@ -65,7 +66,15 @@ different grouping points}
 \item{lwd_arrow}{The thickness of the arrow illustrating liberal
 vs. conservative responses}
 
-\item{...}{further arguments passed to `plot`}
+\item{cex.lab}{See ?par}
+
+\item{cex.axis}{see ?par}
+
+\item{german}{German labels for criterion?}
+
+\item{cex_crit_label}{Size of criterion label}
+
+\item{cex_factors}{Size of the label of the factors (in the plot, not on axis)}
 }
 \description{
 Plot the response criterion by option position, possibly using a

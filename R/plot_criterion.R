@@ -36,7 +36,11 @@
 #' @param main The caption of the plot
 #' @param lwd_arrow The thickness of the arrow illustrating liberal
 #'     vs. conservative responses
-#' @param ... further arguments passed to `plot`
+#' @param cex.lab See ?par
+#' @param cex.axis see ?par
+#' @param german German labels for criterion?
+#' @param cex_crit_label Size of criterion label
+#' @param cex_factors Size of the label of the factors (in the plot, not on axis)
 #' 
 #' @export
 #' 
@@ -51,8 +55,10 @@ plot_criterion <- function(tab, ylim=c(-1, 1),
                            cex=1.4, err.bar = NULL, type="b",
                            txt = colnames(tab),
                            labelx = TRUE, dev = 0.07, main="",
-                           lwd_arrow = 1, ...) {
-
+                           lwd_arrow = 1, xlim = c(1,nrow(tab)),
+                           cex.lab = 1, cex.axis = 1, german = FALSE,
+                           cex_crit_label  = 1, cex_factors = 1) {
+    
     levels <- colnames(tab)
     if (!add) {
         # ‘c(bottom, left, top, right)’ for margin
@@ -63,7 +69,8 @@ plot_criterion <- function(tab, ylim=c(-1, 1),
         plot(1:nrow(tab)-dev, tab[,levels[1]], las=1, ylim=ylim,
              col= "transparent", las=1, type=type, ylab=ylab,
              xaxt = "n", xlab=xlab, pch=19, cex=cex, lty=lty,
-             lwd=lwd, main=main, ...)
+             lwd=lwd, main=main, xlim = xlim, cex.lab = cex.lab,
+             cex.axis = cex.axis)
         plot.err.bar(err.bar, tab, dev)
         ## plot data points for first level of factor
         points(1:nrow(tab)-dev, tab[,levels[1]], col = "black",
@@ -75,11 +82,18 @@ plot_criterion <- function(tab, ylim=c(-1, 1),
         points(1:nrow(tab)+dev, tab[,levels[2]], col = "black", type=type,
                pch = 19, cex = cex, lwd=lwd)
 
-        if (labelx != "") axis(side=1, at = 1:nrow(tab), labels = labelx)
+        ## x-axis
+        if (labelx != "") axis(side=1, at = 1:nrow(tab), labels = labelx, cex.axis = cex.axis)
+        
+        # axis on right side, label of criterion
         if (labelCriterion) {
+            crit_labels <- c("liberal", "neutral", "conservative")
+            if (german) {
+                crit_labels[3] <- crit_labels[3] <- "konservativ"
+            }
             axis(side=4, at = c(ylim[1], 0, ylim[2]),
-                 labels=c("liberal", "neutral", "conservative"),
-                 las = 1, tick=FALSE)
+                 labels=crit_labels,
+                 las = 1, tick=FALSE, cex.axis = cex_crit_label)
             # draw arrows next to the the plot:
             normal.xpd <- par()$xpd
             par(xpd=NA)
@@ -89,8 +103,8 @@ plot_criterion <- function(tab, ylim=c(-1, 1),
             par(xpd=normal.xpd) # reverse
         }
         if (plotNeutral) abline(h = 0, lwd=1, lty=3)
-        text(txt.cords[[1]][1], txt.cords[[1]][2], txt[1], pos = 4)
-        text(txt.cords[[2]][1], txt.cords[[2]][2], txt[2], pos = 4)
+        text(txt.cords[[1]][1], txt.cords[[1]][2], txt[1], pos = 4, cex = cex_factors)
+        text(txt.cords[[2]][1], txt.cords[[2]][2], txt[2], pos = 4, cex = cex_factors)
         on.exit(par(mar = default.mar))
     } else {
         plot.err.bar(err.bar, tab, dev)
