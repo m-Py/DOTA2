@@ -41,17 +41,6 @@ option_data <- get_response_table(testData, id, by_option = TRUE)
 
 ```
 
-If only information about a subset of the test items is required, the
-parameter `item_IDs` can be adjusted. If for example only responses to
-item 1 are required, use `get_response_table` like this:
-
-```R
-
-item_data <- get_response_table(testData, id, by_option = FALSE, item_IDs = 1)
-option_data <- get_response_table(testData, id, by_option = TRUE, item_IDs = 1)
-
-```
-
 ### Data description
 
 `get_response_table` returns a `data.frame` in [long
