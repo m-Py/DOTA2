@@ -25,61 +25,31 @@
 
 get_response_data_person <- function(JsonString, itemIDs = NULL,
                                      itemPrefix = "item") {
-    jsonList       <- convertJsonToList(JsonString)
-    domcItemData   <- getDomcItemData(jsonList)
-    sortedIDs      <- getItemsIDsSorted(domcItemData, itemPrefix)
-    selectionIDs   <- selectIDs(sortedIDs, itemIDs)
-    sortedItemData <- sortItemData(domcItemData, selectionIDs, itemPrefix)
-    return(sortedItemData)
+  jsonList       <- convertJsonToList(JsonString)
+  domcItemData   <- getDomcItemData(jsonList)
+  #sortedIDs      <- getItemsIDsSorted(domcItemData, itemPrefix)
+  #selectionIDs   <- selectIDs(sortedIDs, itemIDs)
+  #sortedItemData <- sortItemData(domcItemData, selectionIDs, itemPrefix)
+  return(domcItemData)
 }
 
 #' @importFrom jsonlite fromJSON
 convertJsonToList <- function(JsonString) {
-    # had to convert "" to '' in Unipark, this conversion needs to be reverted:
-    JsonString <- gsub("'", "\"", JsonString)
-    jsonList <- jsonlite::fromJSON(JsonString, simplifyDataFrame=FALSE)
-    return(jsonList)
+  # had to convert "" to '' in Unipark, this conversion needs to be reverted:
+  JsonString <- gsub("'", "\"", JsonString)
+  jsonList <- jsonlite::fromJSON(JsonString, simplifyDataFrame=FALSE)
+  return(jsonList)
 }
 
 getDomcItemData <- function(jsonList) {
-    # select data for DOMC items only
-    domcData <- list()
-    for (i in 1:length(jsonList)) {
-        if (!is.null(jsonList[[i]]$responseData)) {
-            itemIdentifier <- jsonList[[i]]$id
-            itemData       <- jsonList[[i]]$responseData
-            domcData[[itemIdentifier]] <- itemData
-        }
+  # select data for DOMC items only
+  domcData <- list()
+  for (i in 1:length(jsonList)) {
+    if (!is.null(jsonList[[i]]$responseData)) {
+      itemIdentifier <- jsonList[[i]]$id
+      itemData       <- jsonList[[i]]$responseData
+      domcData[[itemIdentifier]] <- itemData
     }
-    return(domcData)
-}
-
-# return a vector of sorted item IDs
-getItemsIDsSorted <- function(rndSeqList, itemPrefix) {
-    identifierNumber <- vector(length=length(rndSeqList))
-    j <- 1
-    for (id in names(rndSeqList)) {
-        selector <- gsub(paste0("[", itemPrefix, "]"), "", id)
-        identifierNumber[j] <- as.numeric(selector)
-        j <- j + 1
-    }
-    identifierSorted <- sort(identifierNumber)
-    return(identifierSorted)
-}
-
-selectIDs <- function(sortedIDs, itemIDs) {
-    if (is.null(itemIDs)) {
-        return(sortedIDs)
-    }
-    return(intersect(sortedIDs, itemIDs))
-}
-
-# given DOMC data and vector of sorted item IDs, return sorted DOMC data 
-sortItemData <- function(rndSeqList, sortedIDs, itemPrefix) {
-    sortedData <- list()
-    sortedIDs <- paste0(itemPrefix, sortedIDs)
-    for (id in sortedIDs) {
-        sortedData[[id]] <- rndSeqList[[id]] 
-    }
-    return(sortedData)
+  }
+  return(domcData)
 }

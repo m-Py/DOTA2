@@ -9,6 +9,6 @@ License: GPL-3
 Encoding: UTF-8
 LazyLoad: yes
 Imports: jsonlite, plyr, reshape2
-Version: 0.0.04
-Date: 2018-07-09
-RoxygenNote: 6.0.1
+Version: 0.0.05
+Date: 2018-10-30
+RoxygenNote: 6.1.0
